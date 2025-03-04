@@ -9,6 +9,8 @@ TagManager:
   - Walls
   - NPC
   - Waypoint
+  - Enemy
+  - Collectables
   layers:
   - Default
   - TransparentFX
@@ -18,8 +20,8 @@ TagManager:
   - UI
   - Ground
   - Wall
-  - 
-  - 
+  - Player
+  - Collectables
   - 
   - 
   - 

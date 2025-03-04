@@ -16,7 +16,6 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance { get; private set; }
 
-    // --------------------------------------------------------------------------------------------
     [Header("Background Music Settings")]
     public GameObject musicPrefab;
     private float musicFadeDuration = 1.5f;
@@ -28,7 +27,6 @@ public class AudioManager : MonoBehaviour
     private AudioSource currentMusicSource;
     private AudioSource nextMusicSource;
 
-    // --------------------------------------------------------------------------------------------
     
     [Header("Ambient Audio Settings")]
     public GameObject ambientAudioPrefab;
@@ -41,14 +39,12 @@ public class AudioManager : MonoBehaviour
     private AudioSource currentAmbientAudioSource;
     private AudioSource nextAmbientAudioSource;
     
-    // --------------------------------------------------------------------------------------------
     
     [Header("Sound Effects Settings")]
     public GameObject soundEffectPrefab;
     private Dictionary<string, AudioClip> soundEffects = new Dictionary<string, AudioClip>();
 
     // --------------------------------------------------------------------------------------------
-    #region Available Audio Tracks ------------------------------------
     [Header("Available Music Tracks")]
     [SerializeField] private List<string> musicTrackNames = new List<string>();
     
@@ -57,13 +53,9 @@ public class AudioManager : MonoBehaviour
 
     [Header("Available Sound Effects")]
     [SerializeField] private List<string> soundEffectNames = new List<string>();
-    #endregion
-    // --------------------------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------------------------
     
-    // --------------------------------------------------------------------------------------------
-    #region Initialise Singleton Pattern ------------------------------------
     private void Awake()
     {
         if (Instance == null)
@@ -77,8 +69,6 @@ public class AudioManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    #endregion
-    // --------------------------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------------------------
     #region Event Subscriptions ------------------------------------
@@ -121,7 +111,7 @@ public class AudioManager : MonoBehaviour
             musicTrackNames.Add(bgmClips[i].name);
         }
         
-        AudioClip[] ambientClips = Resources.LoadAll<AudioClip>("Audio/Ambience-Music");
+        AudioClip[] ambientClips = Resources.LoadAll<AudioClip>("Audio/Ambient");
         for (int i = 0; i < ambientClips.Length; i++)
         {
             ambientAudioTracks[i] = ambientClips[i];
@@ -590,9 +580,6 @@ private IEnumerator FadeOutAndInAmbientAudio(Transform attachTo, AudioClip newTr
     #region PlaySoundEffects ------------------------------------
     public void PlaySoundEffect(Transform attachTo, string soundName, float volume, float pitch, bool randomizePitch, float pitchRange, float spatialBlend, string eventName)
     {
-        
-        Debug.Log($"Playing sound effect '{soundName}' with volume {volume}, pitch {pitch}, spatial blend {spatialBlend}");
-        
         // Check if the sound effect exists in the dictionary
         if (!soundEffects.TryGetValue(soundName, out AudioClip clip))
         {

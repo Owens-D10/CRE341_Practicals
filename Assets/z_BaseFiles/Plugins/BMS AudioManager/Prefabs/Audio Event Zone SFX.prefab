@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 5348913106041535006}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 5.5, y: 0, z: 2.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -120,20 +120,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventName: Custom SFX Event Name
   sfxName:
-  - Assault Rifle Shot
-  - Dry Shot
-  - Pistol Shot
-  - Sci Fi Shotgun
+  - Car Horn-Honk_1
   playOnEnabled: 0
   attachSoundToTransform: 0
   volume: 1
   pitch: 1
   randomisePitch: 1
   pitchRange: 0.1
-  spatialBlend: 0
+  spatialBlend: 0.5
   randomiseDelay: 0
   eventDelay: 0
   percentageChanceToPlay: 100
-  collisionType: 2
+  collisionType: 1
   targetTag: Player
   testMode: 0

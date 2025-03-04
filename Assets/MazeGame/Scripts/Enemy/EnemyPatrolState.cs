@@ -1,0 +1,63 @@
+using UnityEngine;
+using UnityEngine.AI;
+
+public class EnemyPatrolState : IEnemyStateMachine
+{
+    public void Enter(EnemyBase enemy)
+    {
+        Debug.Log("Entering Patrol State");
+        
+    }
+
+    public void Exit(EnemyBase enemy)
+    {
+        Debug.Log("Exiting Patrol State");
+    }
+
+    public void Update(EnemyBase enemy)
+    {
+
+        if (enemy.agent.remainingDistance <= enemy.agent.stoppingDistance) //done with path
+        {
+            Vector3 point;
+            if (RandomPoint(enemy.centrePoint.position, enemy.range, out point)) //pass in our centre point and radius of area
+            {
+                Debug.DrawRay(point, Vector3.up, Color.blue, 1.0f); //so you can see with gizmos
+                enemy.agent.SetDestination(point);
+            }
+        }
+
+        if (enemy.vision.playerSpotted == true)
+        {
+            enemy.SetState(new EnemyChaseState());
+        }
+    }
+        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        void Start()
+        {
+
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+
+        }
+
+        bool RandomPoint(Vector3 center, float range, out Vector3 result)
+        {
+
+            Vector3 randomPoint = center + Random.insideUnitSphere * range; //random point in a sphere 
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas)) //documentation: https://docs.unity3d.com/ScriptReference/AI.NavMesh.SamplePosition.html
+            {
+                //the 1.0f is the max distance from the random point to a point on the navmesh, might want to increase if range is big
+                //or add a for loop like in the documentation
+                result = hit.position;
+                return true;
+            }
+
+            result = Vector3.zero;
+            return false;
+        }
+}

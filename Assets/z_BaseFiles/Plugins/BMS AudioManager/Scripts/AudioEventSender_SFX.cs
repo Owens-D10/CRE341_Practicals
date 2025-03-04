@@ -14,8 +14,8 @@ public class AudioEventSender_SFX : MonoBehaviour, IAudioEventSender
 {
     
     [Space(20)]
-    //  USE THIS AS A TAG TO DETERMINE WHICH EVENT TO SEND (Mutiple scripts can be attached to the same object)
-    // Loop through the AudioEventSender_SFX scripts on the object and send the event with the matching eventName
+    ///  USE THIS AS A TAG TO DETERMINE WHICH EVENT TO SEND (Mutiple scripts can be attached to the same object)
+    /// Loop through the AudioEventSender_SFX scripts on the object and send the event with the matching eventName
     public string eventName = "Custom SFX Event Name"; //for future use
     
     [Space(10)] 
@@ -26,8 +26,7 @@ public class AudioEventSender_SFX : MonoBehaviour, IAudioEventSender
     
     [Space(20)]
     public bool playOnEnabled = true;
-    public bool attachSoundToThisTransform = false;
-    public Transform transformToAttachTo;
+    public bool attachSoundToTransform = false;
     
     [Space(10)]
     [Range(0, 1f)] public float volume = 1.0f;
@@ -55,23 +54,17 @@ public class AudioEventSender_SFX : MonoBehaviour, IAudioEventSender
     [Header("TestMode : 'T' to play sound effect")]
     public bool testMode = false;
     
-    private void OnEnable()
-    {
+    private void OnEnable(){
         if (playOnEnabled)
-        {
-            StartCoroutine(WaitForAudioManagerAndPlay());
+        {   
+            //CHECK THE TIME THE GAME HAS BEEN RUNNING - The audiomanager will not be ready to play music until the start method has run
+            if (Time.timeSinceLevelLoad > 0.1f){
+                Play();
+            }
+            else{
+                StartCoroutine(PlaySFX_Delayed(eventDelay)); 
+            }
         }
-    }
-
-    private IEnumerator WaitForAudioManagerAndPlay()
-    {
-        // Wait until AudioManager.Instance is not null
-        while (AudioManager.Instance == null)
-        {
-            yield return null; // Wait for the next frame
-        }
-        // Play the sound once AudioManager.Instance is ready
-        Play();
     }
     
     private void OnTriggerEnter(Collider other)
@@ -113,13 +106,13 @@ public class AudioEventSender_SFX : MonoBehaviour, IAudioEventSender
     
     private void PlaySFX()
     {
-        if (attachSoundToThisTransform){
+        if (attachSoundToTransform){
             //send the PlaySFX Event with parameters from the inspector
             AudioEventManager.PlaySFX(this.transform, sfxNameToPlay, volume, pitch, randomisePitch, pitchRange, spatialBlend, eventName);
         }
         else{
             //send the PlaySFX Event with parameters from the inspector
-            AudioEventManager.PlaySFX(transformToAttachTo, sfxNameToPlay, volume, pitch, randomisePitch, pitchRange, spatialBlend, eventName);
+            AudioEventManager.PlaySFX(null, sfxNameToPlay, volume, pitch, randomisePitch, pitchRange, spatialBlend, eventName);
         }
     }
     private IEnumerator PlaySFX_Delayed(float delay)
@@ -130,13 +123,13 @@ public class AudioEventSender_SFX : MonoBehaviour, IAudioEventSender
         
         yield return new WaitForSeconds(delay);
         
-        if (attachSoundToThisTransform){
+        if (attachSoundToTransform){
             //send the PlaySFX Event with parameters from the inspector
             AudioEventManager.PlaySFX(this.transform, sfxNameToPlay, volume, pitch, randomisePitch, pitchRange, spatialBlend, eventName);
         }
         else{
             //send the PlaySFX Event with parameters from the inspector
-            AudioEventManager.PlaySFX(transformToAttachTo, sfxNameToPlay, volume, pitch, randomisePitch, pitchRange, spatialBlend, eventName);
+            AudioEventManager.PlaySFX(null, sfxNameToPlay, volume, pitch, randomisePitch, pitchRange, spatialBlend, eventName);
         }
     }
     
