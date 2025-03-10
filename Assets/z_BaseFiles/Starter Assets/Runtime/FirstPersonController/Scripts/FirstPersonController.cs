@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using UnityEditor.SearchService;
+using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
+using UnityEngine.SceneManagement;
 
 namespace StarterAssets
 {
@@ -68,7 +70,6 @@ namespace StarterAssets
 		private CharacterController _controller;
 		private StarterAssetsInputs _input;
 		private GameObject _mainCamera;
-
 		private const float _threshold = 0.01f;
 
 		private bool IsCurrentDeviceMouse
@@ -104,12 +105,15 @@ namespace StarterAssets
 
 			// reset our timeouts on start
 			_fallTimeoutDelta = FallTimeout;
+
+			
 		}
 
 		private void Update()
 		{
 			GroundedCheck();
 			Move();
+			
 		}
 
 		private void LateUpdate()
@@ -213,5 +217,7 @@ namespace StarterAssets
 			// when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
 			Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z), GroundedRadius);
 		}
+
+		
 	}
 }
