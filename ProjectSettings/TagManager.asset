@@ -12,6 +12,10 @@ TagManager:
   - Enemy
   - Collectables
   - Monster
+  - WeaponBox
+  - Shotgun
+  - Torch
+  - Jumpscare
   layers:
   - Default
   - TransparentFX
