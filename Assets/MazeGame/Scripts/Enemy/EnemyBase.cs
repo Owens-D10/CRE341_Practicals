@@ -2,8 +2,10 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.AI;
 using System.Collections;
+using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
-public class EnemyBase : MonoBehaviour
+public class EnemyBase : MonoBehaviour, IDamagable
 {
 
 
@@ -18,39 +20,52 @@ public class EnemyBase : MonoBehaviour
     [Header("Enemy FX")]
     public GameObject dieEffectPrefab; // Reference to the die effect prefab  */
 
-    // From previous health script
-   // public int currentHealth;
-   // public int maxHealth = 3;
-    //public bool dead;
-   // public Animator animator;
+    
     public Rigidbody rb;
-    public Collider collider;
+    
    public EnemyVision vision;
-   // public AudioSource deathHowl;
-   // public ParticleSystem bloodEffect;
+   
     public Transform centrePoint;
     public float range;
 
     public GameObject destination;
     public NavMeshAgent agent;
     public GameObject monster;
-    //public float attackCooldown = 1.5f;
-    //public bool canAttack;
-    //public int damage = 1;
-    //public AudioSource attack;
-   // public AudioSource hurt;
+    public GameObject player;
+    public PlayerStats stats;
+    public Camera playerCamera;
+    public Camera endCamera;
+
+
+    public int currentHealth;
+    public int maxHealth = 1;
+
+    
+    public AudioSource spotPlayer;
+    
 
     private void Start()
     {
         // Start with the Idle state
         SetState(new EnemyPatrolState());
 
-        // Find the player in the scene
-       // currentHealth = maxHealth;
+        player = GameObject.FindWithTag("Player");
+
+        stats = player.GetComponent<PlayerStats>();
+
+        destination = player;
+
+        centrePoint = GameObject.FindWithTag("CentrePoint").transform;
 
         agent = GetComponent<NavMeshAgent>();
 
-       // canAttack = true;
+        playerCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
+
+        endCamera = GameObject.FindWithTag("EndCamera").GetComponent<Camera>();
+
+        currentHealth = maxHealth;
+
+        
     }
 
 
@@ -68,28 +83,18 @@ public class EnemyBase : MonoBehaviour
         // Delegate behaviour to the current state
         currentState?.Update(this);
 
-       /* if (currentHealth <= 0)
-        {
-            Die();
-        }*/
+        
     }
 
-   /* void Die()
+    public void Destroy()
     {
-        animator.SetTrigger("Dying");
-        dead = true;
-        rb.useGravity = false;
-        box.enabled = false;
-        agent.enabled = false;
-        //vision.enabled = false;
+        Destroy(monster);
+        SceneManager.LoadScene("TitleScreen");
+    }
 
 
 
-    }*/
 
-    
-
-    
 
     public void SetState(IEnemyStateMachine newState)
     {
@@ -109,12 +114,17 @@ public class EnemyBase : MonoBehaviour
         return "No State";
     }
 
-    
+    public IEnumerator CameraSwitch()
+    {
+        yield return new WaitForSeconds(5);
+        playerCamera.enabled = false;
+        player.SetActive(false);
+        endCamera.enabled = true;
+        
+    }
 
-    
-
-    
-
-
-    
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+    }
 }

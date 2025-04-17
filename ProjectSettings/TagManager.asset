@@ -16,6 +16,12 @@ TagManager:
   - Shotgun
   - Torch
   - Jumpscare
+  - KeySpawn
+  - PlayerSpawn
+  - CentrePoint
+  - GunBoxSpawn
+  - EndCamera
+  - MuzzleFlash
   layers:
   - Default
   - TransparentFX
@@ -27,7 +33,7 @@ TagManager:
   - Wall
   - Player
   - Collectables
-  - 
+  - Monster
   - 
   - 
   - 

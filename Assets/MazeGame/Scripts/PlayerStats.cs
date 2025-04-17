@@ -1,7 +1,7 @@
-using JetBrains.Annotations;
-using Unity.VisualScripting;
+
+using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem.Android;
+using UnityEngine.SceneManagement;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -12,6 +12,11 @@ public class PlayerStats : MonoBehaviour
     public bool playerHasGun;
     public GameObject torch;
     public GameObject shotgun;
+    public AudioSource jumpscareSound;
+    public AudioSource groovy;
+    public AudioSource gunCock;
+    public AudioSource keyPickUp;
+    public GameObject muzzleFlash;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -21,9 +26,11 @@ public class PlayerStats : MonoBehaviour
         torch = GameObject.FindWithTag("Torch");
         shotgun = GameObject.FindWithTag("Shotgun");
         jumpscare = GameObject.FindWithTag("Jumpscare");
+        muzzleFlash = GameObject.FindWithTag("MuzzleFlash");
 
         shotgun.SetActive(false);
         jumpscare.SetActive(false);
+        muzzleFlash.SetActive(false);
     }
 
     // Update is called once per frame
@@ -37,6 +44,8 @@ public class PlayerStats : MonoBehaviour
             playerHasGun = true;
             torch.SetActive(false);
             shotgun.SetActive(true);
+            gunCock.Play();
+            groovy.Play();
 
         }
     }
@@ -46,12 +55,13 @@ public class PlayerStats : MonoBehaviour
         if (other.tag == "Collectables")
         {
             Destroy(other.gameObject);
-            collectables = +1;
+            collectables += 1;
+            keyPickUp.Play();
         }
 
-        if (other.tag == "Monster")
+        if (other.tag == "Monster" && playerHasGun == false)
         {
-            JumpScare();
+           StartCoroutine(JumpScare());
         }
 
         if (other.tag == "WeaponBox")
@@ -68,9 +78,14 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
-    private void JumpScare()
+    private IEnumerator JumpScare()
     {
         Time.timeScale = 0;
         jumpscare.SetActive(true);
+        torch.SetActive(false);
+        jumpscareSound.Play();
+        yield return new WaitForSeconds(5);
+        SceneManager.LoadScene("TitleScreen");
+
     }
 }

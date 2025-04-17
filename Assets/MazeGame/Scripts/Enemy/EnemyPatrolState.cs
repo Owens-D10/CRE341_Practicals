@@ -27,9 +27,13 @@ public class EnemyPatrolState : IEnemyStateMachine
             }
         }
 
-        if (enemy.vision.playerSpotted == true)
+        if (enemy.vision.playerSpotted == true && enemy.stats.playerHasGun == false)
         {
             enemy.SetState(new EnemyChaseState());
+        }
+        if (enemy.currentHealth <= 0)
+        {
+            enemy.SetState(new EnemyDeathState());
         }
     }
     bool RandomPoint(Vector3 center, float range, out Vector3 result)

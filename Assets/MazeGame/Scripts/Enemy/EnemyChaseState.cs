@@ -11,6 +11,7 @@ public class EnemyChaseState : IEnemyStateMachine
     {
         Debug.Log("Entering Chase State");
         enemy.agent.SetDestination(enemy.destination.transform.position);
+        enemy.spotPlayer.Play();
         
     }
 
@@ -23,6 +24,10 @@ public class EnemyChaseState : IEnemyStateMachine
         if (enemy.vision.playerSpotted == false && enemy.vision.playerInRange == false)
         {
             enemy.SetState(new EnemyPatrolState());
+        }
+        if (enemy.currentHealth <= 0)
+        {
+            enemy.SetState(new EnemyDeathState());
         }
     }
 
