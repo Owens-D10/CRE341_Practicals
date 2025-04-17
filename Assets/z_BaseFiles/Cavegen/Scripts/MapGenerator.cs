@@ -14,6 +14,8 @@ public class MapGenerator : MonoBehaviour {
 	public int width;
 	public int height;
 
+	
+
 	public string seed;
 	public bool useRandomSeed;
 
@@ -33,7 +35,7 @@ public class MapGenerator : MonoBehaviour {
 
 	void Start() {
 
-
+		surface = GameObject.FindWithTag("Navmesh").GetComponent<NavMeshSurface>();
         if (groundObject == null)
         {
             Debug.LogError("No object tagged 'Ground' found. Make sure your ground plane is tagged correctly.");

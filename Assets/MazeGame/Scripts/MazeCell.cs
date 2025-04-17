@@ -1,3 +1,4 @@
+using Unity.AI.Navigation;
 using UnityEngine;
 
 public class MazeCell : MonoBehaviour
@@ -23,32 +24,32 @@ public class MazeCell : MonoBehaviour
     {
         IsVisited = true;
 
-       // unvisitedBlock.SetActive(false);
+       unvisitedBlock.SetActive(false);
         Destroy(unvisitedBlock);
     }
 
     public void ClearLeftWall()
     {
-        //leftWall.SetActive(false);
+        leftWall.SetActive(false);
         Destroy(leftWall);
     }
 
     public void ClearRightWall()
     {
-       // rightWall.SetActive(false);
+       rightWall.SetActive(false);
         Destroy(rightWall);
     }
 
     public void ClearFrontWall()
     {
-       // frontWall.SetActive(false);
+       frontWall.SetActive(false);
         Destroy(frontWall);
 
     }
 
     public void ClearBackWall()
     {
-       // backWall.SetActive(false);
+       backWall.SetActive(false);
         Destroy(backWall);
     }
 }

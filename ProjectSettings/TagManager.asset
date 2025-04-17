@@ -22,6 +22,7 @@ TagManager:
   - GunBoxSpawn
   - EndCamera
   - MuzzleFlash
+  - Navmesh
   layers:
   - Default
   - TransparentFX

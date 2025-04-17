@@ -34,7 +34,6 @@ public class EnemyBase : MonoBehaviour, IDamagable
     public GameObject player;
     public PlayerStats stats;
     public Camera playerCamera;
-    public Camera endCamera;
 
 
     public int currentHealth;
@@ -61,7 +60,6 @@ public class EnemyBase : MonoBehaviour, IDamagable
 
         playerCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
 
-        endCamera = GameObject.FindWithTag("EndCamera").GetComponent<Camera>();
 
         currentHealth = maxHealth;
 
@@ -114,14 +112,7 @@ public class EnemyBase : MonoBehaviour, IDamagable
         return "No State";
     }
 
-    public IEnumerator CameraSwitch()
-    {
-        yield return new WaitForSeconds(5);
-        playerCamera.enabled = false;
-        player.SetActive(false);
-        endCamera.enabled = true;
-        
-    }
+    
 
     public void TakeDamage(int damage)
     {

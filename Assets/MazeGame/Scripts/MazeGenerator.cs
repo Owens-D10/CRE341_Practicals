@@ -15,6 +15,8 @@ public class MazeGenerator : MonoBehaviour
     [SerializeField]
     private int mazeDepth;
 
+    public NavMeshSurface surface;
+
     private MazeCell[,] mazeGrid;
     List<Vector3Int> possibleWallHorizontalPosition;
     List<Vector3Int> possibleWallVerticalPosition;
@@ -65,7 +67,8 @@ public class MazeGenerator : MonoBehaviour
         possibleWallVerticalPosition = new List<Vector3Int>();
 
         GenerateMaze(null, mazeGrid[0, 0]);
-        GetComponent<NavMeshSurface>().BuildNavMesh();
+        surface.BuildNavMesh();
+        //StartCoroutine(GenerateNavMesh());
 
     }
 
@@ -195,6 +198,12 @@ public class MazeGenerator : MonoBehaviour
             currentCell.ClearFrontWall();
             return;
         }
+    }
+
+    private IEnumerator GenerateNavMesh()
+    {
+        yield return new WaitForSeconds(10);
+        surface.BuildNavMesh();
     }
     private void SpawnProps()
     {
